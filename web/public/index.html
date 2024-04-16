@@ -48,7 +48,7 @@
                 <tr>
                     <th>Id</th>
                     <th>Имя</th>
-                    <th>возраст</th>
+                    <th>Возраст</th>
                     <th>Должность</th>
                     <th></th>
                 </tr>
@@ -96,7 +96,7 @@
                 });
             }
             // Добавление пользователя
-            function CreateUser(userName, userAge) {
+            function CreateUser(userName, userAge, userJob) {
                 $.ajax({
                     url: 'api/users',
                     contentType: 'application/json',
@@ -113,7 +113,7 @@
                 });
             }
             // Изменение пользователя
-            function EditUser(userId, userName, userAge) {
+            function EditUser(userId, userName, userAge, userJob) {
                 $.ajax({
                     url: 'api/users',
                     contentType: 'application/json',
@@ -171,13 +171,18 @@
                     '</td> <td>' +
                     user.age +
                     '</td>' +
-                    
-                    "<td><a class='editLink' data-id='" +
+                    '<td>' +
+                    user.job +
+                    '</td>' +
+                   "<td><a class='editLink' data-id='" +
                     user.id +
                     "'>Изменить</a> | " +
                     "<a class='removeLink' data-id='" +
                     user.id +
-                    "'>Удалить</a></td></tr>"
+                    "'>Удалить</a> | "+
+                    "<a class='historyLink' data-id='" +
+                    user.id +
+                    "'>История изменений</a></td></tr>| "
                 );
             };
             // сброс значений формы
@@ -192,8 +197,9 @@
                 var id = this.elements['id'].value;
                 var name = this.elements['name'].value;
                 var age = this.elements['age'].value;
-                if (id == 0) CreateUser(name, age);
-                else EditUser(id, name, age);
+                var job = this.elements['job'].value;
+                if (id == 0) CreateUser(name, age, job);
+                else EditUser(id, name, age, job);
             });
 
             // нажимаем на ссылку Изменить
@@ -210,6 +216,8 @@
                     DeleteUser(id);
                 }
             );
+
+            // нажимаем на ссылку История изменений
 
             // загрузка пользователей
             GetUsers();

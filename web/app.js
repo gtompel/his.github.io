@@ -1,4 +1,3 @@
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var fs = require('fs');
@@ -7,6 +6,7 @@ var app = express();
 var jsonParser = bodyParser.json();
 
 app.use(express.static(__dirname + '/public'));
+
 // получение списка данных
 app.get('/api/users', function (req, res) {
     var content = fs.readFileSync('users.json', 'utf8');
@@ -39,7 +39,8 @@ app.post('/api/users', jsonParser, function (req, res) {
 
     var userName = req.body.name;
     var userAge = req.body.age;
-    var user = { name: userName, age: userAge };
+    var userJob = req.body.job;
+    var user = { name: userName, age: userAge, job: userJob };
 
     var data = fs.readFileSync('users.json', 'utf8');
     var users = JSON.parse(data);
@@ -91,6 +92,7 @@ app.put('/api/users', jsonParser, function (req, res) {
     var userId = req.body.id;
     var userName = req.body.name;
     var userAge = req.body.age;
+    var userJob = req.body.job;
 
     var data = fs.readFileSync('users.json', 'utf8');
     var users = JSON.parse(data);
@@ -105,6 +107,7 @@ app.put('/api/users', jsonParser, function (req, res) {
     if (user) {
         user.age = userAge;
         user.name = userName;
+        user.job = userJob;
         var data = JSON.stringify(users);
         fs.writeFileSync('users.json', data);
         res.send(user);
